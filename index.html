@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Admin Page</h1>
+
+<!-- Product Management -->
+<h2>Product Management</h2>
+
+<form id="addProductForm">
+    <label for="productName">Product Name:</label>
+    <input type="text" id="productName" required>
+
+    <label for="productPrice">Product Price:</label>
+    <input type="number" id="productPrice" required>
+
+    <button type="button" onclick="addProduct()">Add Product</button>
+</form>
+
+<table id="productTable">
+    <tr>
+        <th>Product ID</th>
+        <th>Product Name</th>
+        <th>Product Price</th>
+    </tr>
+    <!-- Product data will be dynamically inserted here -->
+</table>
+
+<!-- Order Management -->
+<h2>Order Management</h2>
+
+<table id="orderTable">
+    <tr>
+        <th>Order ID</th>
+        <th>Product Name</th>
+        <th>Quantity</th>
+        <th>Total Price</th>
+    </tr>
+    <!-- Order data will be dynamically inserted here -->
+</table>
+
+<script>
+    // Sample product data
+    const products = [
+        { id: 1, name: 'Product A', price: 20 },
+        { id: 2, name: 'Product B', price: 30 },
+        // Add more products as needed
+    ];
+
+    // Sample order data
+    const orders = [
+        { id: 101, productName: 'Product A', quantity: 2, totalPrice: 40 },
+        { id: 102, productName: 'Product B', quantity: 1, totalPrice: 30 },
+        // Add more orders as needed
+    ];
+
+    // Function to add a new product
+    function addProduct() {
+        const productName = document.getElementById('productName').value;
+        const productPrice = parseFloat(document.getElementById('productPrice').value);
+
+        if (productName && !isNaN(productPrice)) {
+            const newProduct = {
+                id: products.length + 1,
+                name: productName,
+                price: productPrice,
+            };
+
+            products.push(newProduct);
+            updateProductTable();
+        } else {
+            alert('Please enter valid product information.');
+        }
+    }
+
+    // Function to update the product table
+    function updateProductTable() {
+        const productTable = document.getElementById('productTable');
+        const tbody = productTable.getElementsByTagName('tbody')[0];
+
+        // Clear existing table rows
+        tbody.innerHTML = '';
+
+        // Populate the table with product data
+        products.forEach(product => {
+            const row = tbody.insertRow();
+            row.insertCell(0).textContent = product.id;
+            row.insertCell(1).textContent = product.name;
+            row.insertCell(2).textContent = `$${product.price.toFixed(2)}`;
+        });
+    }
+
+    // Function to update the order table
+    function updateOrderTable() {
+        const orderTable = document.getElementById('orderTable');
+        const tbody = orderTable.getElementsByTagName('tbody')[0];
+
+        // Clear existing table rows
+        tbody.innerHTML = '';
+
+        // Populate the table with order data
+        orders.forEach(order => {
+            const row = tbody.insertRow();
+            row.insertCell(0).textContent = order.id;
+            row.insertCell(1).textContent = order.productName;
+            row.insertCell(2).textContent = order.quantity;
+            row.insertCell(3).textContent = `$${order.totalPrice.toFixed(2)}`;
+        });
+    }
+
+    // Initial table population
+    updateProductTable();
+    updateOrderTable();
+</script>
+
+</body>
+</html>
